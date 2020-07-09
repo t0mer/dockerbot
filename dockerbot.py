@@ -8,7 +8,6 @@ import os
 import sys
 import docker
 from telepot.loop import MessageLoop
-API_KEY = os.getenv('API_KEY')
 
 def handle(msg):
     chat_id = msg['chat']['id']
@@ -55,7 +54,7 @@ def handle(msg):
         except:
             x = "Error"
             bot.sendMessage(chat_id,x)
-bot = telepot.Bot('1164956601:AAHMRYbPiY4BIcdEgKghf3bvixbQKr3osiI')
+bot = telepot.Bot(os.getenv('API_KEY'))
 MessageLoop(bot, handle).run_as_thread()
 print('I am listening ...')
  
