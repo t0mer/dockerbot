@@ -2,7 +2,8 @@ FROM python:latest
 
 LABEL maintainer="tomer.klein@gmail.com"
 
-RUN pip install docker telepot  speedtest-cli --no-cache-dir
+RUN pip install docker speedtest-cli --no-cache-dir
+RUN pip install telepot
 
 RUN mkdir /opt/dockerbot
 
