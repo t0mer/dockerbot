@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM python:latest
 
 LABEL maintainer="tomer.klein@gmail.com"
 
