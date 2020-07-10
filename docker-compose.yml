@@ -1,11 +1,17 @@
 version: "3.7"
+
 services:
-    dockerbot:
-        image: 
-        restart: always
-        container_name: dockerbot
-        cap_add:
-          - NET_ADMIN
-        privileged: true
-        environment:
-          - API_KEY=
+  dockerbot:
+    build: https://github.com/t0mer/dockerbot.git
+    container_name: dockerbot
+    network_mode: host
+    cap_add:
+       - NET_ADMIN
+    privileged: true
+    restart: always
+    environment:
+      - API_KEY=
+      - ALLOWED_IDS=
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+ 
