@@ -7,6 +7,7 @@ import subprocess
 import os
 import sys
 import docker
+from docker import Client
 from telepot.loop import MessageLoop
 
 def handle(msg):
