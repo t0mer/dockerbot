@@ -36,7 +36,7 @@ def handle(msg):
         bot.sendMessage(chat_id,x)
     elif command == '/plexstat':
         try:
-            client = Client('/var/run/docker.sock')
+            client = client = docker.from_env()
             container = client.containers.list(all=True, filters={'name':'plex'})
             x = container[0].status
             bot.sendMessage(chat_id,x)
@@ -45,7 +45,7 @@ def handle(msg):
             bot.sendMessage(chat_id,x)
     elif command == '/plexrestart':
         try:
-            client = Client('/var/run/docker.sock')
+            client = client = docker.from_env()
             container = client.containers.list(all=True, filters={'name':'plex'})
             id = container[0].id
             container = client.containers.get(id)
