@@ -9,10 +9,34 @@ import sys
 import docker
 from telepot.loop import MessageLoop
 
+#Auto Commmand List
+def search_string_in_file(file_name, string_to_search):
+    """Search for the given string in file and return lines containing that string,
+    along with line numbers"""
+    list_of_results = []
+    new_line = "\n"
+    # Open the file in read only mode
+    with open(file_name, 'r') as read_obj:
+        # Read all lines in the file one by one
+        for line in read_obj:
+            # For each line, check if line contains the string
+            if string_to_search in line:
+                if ("/?" not in line):
+                    command = line
+                    number = command.rfind("/")
+                    command = command[number:]
+                    number = command.rfind("'")
+                    command = command[:number]
+                    command = command + new_line
+                    # If yes, then add the line number & line as a tuple in the list
+                    list_of_results.append(command)
+    # Return list of tuples containing line numbers and lines where string is found
+    return list_of_results
+
 def handle(msg):
     chat_id = msg['chat']['id']
     command = msg['text']
- 
+
     print ('Got command: %s')%command
     if command == '/time':
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
@@ -62,6 +86,15 @@ def handle(msg):
         except Exception as e:
             x = str(e)
             bot.sendMessage(chat_id,x)
+    elif command == '/?':
+        array = search_string_in_file('/opt/dockerbot/dockerbot.py', "/")
+        s = "Command List:\n"
+        for val in array:
+            if ")" not in val:
+                s+=str(val)
+        x = s
+        bot.sendMessage(chat_id,x)
+
 bot = telepot.Bot(os.getenv('API_KEY'))
 MessageLoop(bot, handle).run_as_thread()
 print('I am listening ...')

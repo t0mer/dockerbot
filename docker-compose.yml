@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+    dockerbot:
+        image: 
+        restart: always
+        container_name: dockerbot
+        cap_add:
+          - NET_ADMIN
+        privileged: true
+        environment:
+          - API_KEY=
