@@ -54,6 +54,14 @@ def handle(msg):
         except Exception as e:
             x = str(e)
             bot.sendMessage(chat_id,x)
+    elif command == '/listcon':
+        try:
+            client = client = docker.from_env()
+            containers = client.containers.list(all=True)
+            bot.sendMessage(chat_id,containers)
+        except Exception as e:
+            x = str(e)
+            bot.sendMessage(chat_id,x)
 bot = telepot.Bot(os.getenv('API_KEY'))
 MessageLoop(bot, handle).run_as_thread()
 print('I am listening ...')
