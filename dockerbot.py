@@ -39,8 +39,8 @@ def handle(msg):
             container = client.containers.list(all=True, filters={'name':'plex'})
             x = container[0].status
             bot.sendMessage(chat_id,x)
-        except:
-            x = "Error"
+        except Exception as e:
+            x = str(e)
             bot.sendMessage(chat_id,x)
     elif command == '/plexrestart':
         try:
@@ -51,8 +51,8 @@ def handle(msg):
             container.restart()
             x = container.status
             bot.sendMessage(chat_id,x)
-        except:
-            x = "Error"
+        except Exception as e:
+            x = str(e)
             bot.sendMessage(chat_id,x)
 bot = telepot.Bot(os.getenv('API_KEY'))
 MessageLoop(bot, handle).run_as_thread()
