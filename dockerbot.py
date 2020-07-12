@@ -11,12 +11,20 @@ import docker
 from telepot.loop import MessageLoop
 
 
+
+def getCommandHelp(line):
+    if "#[" in line:
+        start = line.find("#[") + len("]#")
+        end = line.find("]#")
+        return line[start:end]
+    return ""
+
+
 #Auto Commmand List
 def search_string_in_file(file_name, string_to_search):
     """Search for the given string in file and return lines containing that string,
     along with line numbers"""
     list_of_results = []
-    new_line = "\n"
     # Open the file in read only mode
     with open(file_name, 'r') as read_obj:
         # Read all lines in the file one by one
@@ -29,12 +37,11 @@ def search_string_in_file(file_name, string_to_search):
                     command = command[number:]
                     number = command.rfind("'")
                     command = command[:number]
-                    command = command + new_line
+                    command = command + " " + getCommandHelp(line)  +"\n"
                     # If yes, then add the line number & line as a tuple in the list
                     list_of_results.append(command)
     # Return list of tuples containing line numbers and lines where string is found
     return list_of_results
-
 
 def handle(msg):
     chat_id = msg['chat']['id']
@@ -47,22 +54,22 @@ def handle(msg):
 
 
     print ('Got command: %s')%command
-    if command == '/time':
+    if command == '/time': #[ Get Local Time ]#
         bot.sendMessage(chat_id, str(datetime.datetime.now()))
-    elif command == '/speed':
+    elif command == '/speed': #[ Run Speedtest ]#
         x = subprocess.check_output(['speedtest-cli','--share'])
         photo = re.search("(?P<url>https?://[^\s]+)", x).group("url")
         bot.sendPhoto(chat_id,photo)
-    elif command == '/ip':
+    elif command == '/ip': #[ Get Real IP ]#
         x = subprocess.check_output(['curl','ipinfo.io/ip'])
         bot.sendMessage(chat_id,x)
-    elif command == '/disk':
+    elif command == '/disk': #[ Get Disk Apsce ]#
         x = subprocess.check_output(['df', '-h'])
         bot.sendMessage(chat_id,x)
-    elif command == '/mem':
+    elif command == '/mem': #[ Get Memeory ]#
         x = subprocess.check_output(['cat','/proc/meminfo'])
         bot.sendMessage(chat_id,x)
-    elif command == '/stat':
+    elif command == '/stat': #[ Get bot Status ]#
         bot.sendMessage(chat_id,'Number five is alive!')
     elif command == '/list_containers':
         try:
@@ -112,7 +119,7 @@ def handle(msg):
         except Exception as e:
             x = str(e)
             bot.sendMessage(chat_id,x)
-    elif command == '/?':
+    elif command == '/?' or command=="/start":
         array = search_string_in_file('/opt/dockerbot/dockerbot.py', "/")
         s = "Command List:\n"
         for val in array:
