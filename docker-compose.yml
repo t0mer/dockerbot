@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   dockerbot:
-    build: https://github.com/t0mer/dockerbot.git
+    image: techblog/dockerbot
     container_name: dockerbot
     network_mode: host
     cap_add:
