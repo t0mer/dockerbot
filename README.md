@@ -40,8 +40,8 @@ services:
        - /var/run/docker.sock:/var/run/docker.sock
 ```
 Replace API_KEY with your bot token. if you do not have existing bot you can create one
-using the instruction in Step 2 in this article:
-[TelePi – Control your pi with Telegram Bot](https://en.techblog.co.il/2018/08/11/telepi-control-your-pi-with-telegram-bot/) 
+using the instruction in this article:
+[Bots: An introduction for developers](https://core.telegram.org/bots) 
 
 In order to secure the bot and block unwanted calls from Unauthorized users add your allowd Id's with comma separated values into ALLOWED_IDS
 environmet. in order to get your id use @myidbot in telegram and send the /getid command. the result will be your ID:
