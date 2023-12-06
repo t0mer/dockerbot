@@ -7,8 +7,11 @@ RUN apt update -yqq && \
     apt install -yqq speedtest-cli && \
     apt install -yqq wget
 
-RUN pip install docker --no-cache-dir && \
-    pip install telepot --no-cache-dir
+COPY requirements.txt /tmp
+
+RUN pip install --upgrade pip setuptools --no-cache-dir
+
+RUN pip install -r /tmp/requirements.txt
 
 RUN wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O /usr/lib/python3/dist-packages/speedtest.py
 
