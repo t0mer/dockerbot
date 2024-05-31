@@ -63,10 +63,10 @@ def handle(msg):
     elif command == '/ip': #[ Get Real IP ]#
         x = subprocess.check_output(['curl','ipinfo.io/ip'])
         bot.sendMessage(chat_id,x)
-    elif command == '/disk': #[ Get Disk Apsce ]#
+    elif command == '/disk': #[ Get Disk Space ]#
         x = subprocess.check_output(['df', '-h'])
         bot.sendMessage(chat_id,x)
-    elif command == '/mem': #[ Get Memeory ]#
+    elif command == '/mem': #[ Get Memory ]#
         x = subprocess.check_output(['cat','/proc/meminfo'])
         bot.sendMessage(chat_id,x)
     elif command == '/stat': #[ Get bot Status ]#
