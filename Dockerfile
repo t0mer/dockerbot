@@ -11,7 +11,7 @@ ENV API_KEY ""
 
 COPY requirements.txt /tmp
 
-RUN pip3 install --upgrade pip setuptools --no-cache-dir
+RUN pip3 install --upgrade setuptools --no-cache-dir
 
 RUN pip3 install -r /tmp/requirements.txt
 
