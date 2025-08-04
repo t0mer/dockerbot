@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:24.10
 
 LABEL maintainer="tomer.klein@gmail.com"
 RUN apt update -yqq && \
