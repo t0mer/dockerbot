@@ -237,7 +237,7 @@ def container_command(update, context):
 # Error handler
 def error_handler(update, context):
     logger.error(f"Update {update} caused error {context.error}")
-    if update:
+    if update and update.message:
         context.bot.send_message(
             chat_id=update.message.chat_id,
             text="An error occurred while processing your request."
