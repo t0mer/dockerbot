@@ -1,30 +1,36 @@
 FROM ubuntu:24.10
 
 LABEL maintainer="tomer.klein@gmail.com"
+
+# Install required system dependencies
 RUN apt update -yqq && \
-    apt install -yqq python3-pip && \
-    apt install -yqq libffi-dev && \
-    apt install -yqq libssl-dev && \
-    apt install -yqq curl && \
-    apt install -yqq speedtest-cli && \
-    apt install -yqq wget
+    apt install -yqq python3 \
+                    python3-pip \
+                    curl \
+                    wget \
+                    speedtest-cli \
+                    --no-install-recommends && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
 
+# Set environment variables
 ENV API_KEY ""
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt /tmp
+# Create working directory
+WORKDIR /opt/dockerbot
 
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt
 
-RUN  pip3 install --upgrade pip --no-cache-dir && \
-     pip3 install --upgrade setuptools --no-cache-dir
-     
-RUN pip3 install -r /tmp/requirements.txt
+# Install speedtest-cli script
+RUN wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O /usr/local/lib/python3.12/site-packages/speedtest.py
 
-RUN wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O /usr/lib/python3/dist-packages/speedtest.py
+# Copy application code
+COPY dockerbot.py .
 
-RUN mkdir /opt/dockerbot
-
-COPY dockerbot.py /opt/dockerbot
-
-
-
-ENTRYPOINT ["/usr/bin/python3", "/opt/dockerbot/dockerbot.py"]
+# Run the application
+CMD ["python3", "dockerbot.py"]
