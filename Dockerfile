@@ -1,36 +1,24 @@
-FROM ubuntu:24.10
+FROM python:3.12-slim
 
 LABEL maintainer="tomer.klein@gmail.com"
 
-# Install required system dependencies
-RUN apt update -yqq && \
-    apt install -yqq python3 \
-                    python3-pip \
-                    curl \
-                    wget \
-                    speedtest-cli \
-                    --no-install-recommends && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
+ENV API_KEY="" \
+    ALLOWED_IDS="" \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Set environment variables
-ENV API_KEY ""
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# curl is used by ip_command at runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create working directory
 WORKDIR /opt/dockerbot
 
-# Copy requirements and install Python dependencies
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install speedtest-cli script
-RUN wget https://raw.githubusercontent.com/sivel/speedtest-cli/v2.1.3/speedtest.py -O /usr/local/lib/python3.12/site-packages/speedtest.py
-
-# Copy application code
 COPY dockerbot.py .
 
-# Run the application
 CMD ["python3", "dockerbot.py"]
