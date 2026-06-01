@@ -43,8 +43,9 @@ def search_string_in_file(file_name, string_to_search):
                         if space_pos != -1:
                             command_name = command[:space_pos]
                             help_text = getCommandHelp(line)
-                            command = f"/{command_name} {help_text}\n"
-                            list_of_results.append(command)
+                            if help_text:
+                                command = f"/{command_name} {help_text}\n"
+                                list_of_results.append(command)
     return list_of_results
 
 # Check if user is authorized
@@ -63,7 +64,7 @@ def is_authorized(update, context):
 def start(update, context):
     if not is_authorized(update, context):
         return
-    command_list = search_string_in_file('/opt/dockerbot/dockerbot.py', "def ")
+    command_list = search_string_in_file(os.path.abspath(__file__), "def ")
     message = "Command List:\n"
     for cmd in command_list:
         message += cmd
