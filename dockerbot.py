@@ -204,7 +204,7 @@ def container_command(update, context):
     container_name = command.lstrip('/').rsplit(f'_{operation}', 1)[0]
     try:
         client = docker.from_env()
-        containers = client.containers.list(all=True, filters={'name': container_name})
+        containers = client.containers.list(all=True, filters={'name': f'^/{container_name}$'})
         if not containers:
             context.bot.send_message(
                 chat_id=update.message.chat_id,
