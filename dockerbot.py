@@ -19,7 +19,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Get allowed IDs from environment variable
-ALLOWED_IDS = os.getenv('ALLOWED_IDS', '').split(',') if os.getenv('ALLOWED_IDS') else []
+ALLOWED_IDS = [uid.strip() for uid in os.getenv('ALLOWED_IDS', '').split(',') if uid.strip()] if os.getenv('ALLOWED_IDS') else []
 
 def getCommandHelp(line):
     if "#[" in line:
