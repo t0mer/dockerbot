@@ -193,15 +193,15 @@ def container_command(update, context):
         return
     command = update.message.text
     operation = None
-    if "_restart" in command:
+    if command.endswith("_restart"):
         operation = "restart"
-    elif "_stop" in command:
+    elif command.endswith("_stop"):
         operation = "stop"
-    elif "_start" in command:
+    elif command.endswith("_start"):
         operation = "start"
     else:
         return
-    container_name = command.split('_')[0].replace('/', '')
+    container_name = command.lstrip('/').rsplit(f'_{operation}', 1)[0]
     try:
         client = docker.from_env()
         containers = client.containers.list(all=True, filters={'name': container_name})
