@@ -1,5 +1,5 @@
 docker
-telepot
+python-telegram-bot==13.15
 aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
 requests>=2.32.4 # not directly required, pinned by Snyk to avoid a vulnerability
