@@ -244,7 +244,10 @@ def error_handler(update, context):
         )
 
 def main():
-    updater = Updater(os.getenv('API_KEY'))
+    api_key = os.getenv('API_KEY')
+    if not api_key:
+        sys.exit("API_KEY environment variable is not set")
+    updater = Updater(api_key)
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler("start", start))
